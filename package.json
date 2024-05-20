@@ -1,6 +1,6 @@
 {
   "name": "appwrite-client-wrapper",
-  "version": "0.9.11-alpha",
+  "version": "0.9.12-alpha",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "generate-types": "node ./dist/generateTypes.js",
     "build": "tsc",
-    "postinstall": "npm run build && npm run generate-types",
+    "postinstall": "npm run build",
     "start": "node dist/index.js"
   },
   "keywords": [],
