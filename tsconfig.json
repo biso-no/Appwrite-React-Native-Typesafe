@@ -8,7 +8,7 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "declaration": true,
-    "declarationDir": "./dist"
+    "declarationDir": "./dist/declarations" // Updated declarationDir
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "index.ts", "dist/**/*.ts", "dist/**/*.d.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]
