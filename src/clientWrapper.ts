@@ -17,20 +17,19 @@ class TypedAppwriteClient {
 
   async createDocument<
     DB extends DatabaseId,
-    COL extends CollectionId<DB>,
-    T extends DatabaseMap[DB][COL] & Models.Document
+    COL extends CollectionId<DB>
   >(
     options: {
       databaseId: DB,
       collectionId: COL,
       documentId?: string,
-      data: Omit<T, '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>,
+      data: Omit<DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>,
       permissions?: PermissionOptions
     }
-  ) {
+  ): Promise<DatabaseMap[DB][COL] & Models.Document> {
     const { databaseId, collectionId, documentId = 'unique()', data, permissions } = options;
     const permissionList = permissions ? buildPermissions(permissions) : [];
-    return await this.databases.createDocument<T>(
+    return await this.databases.createDocument<DatabaseMap[DB][COL]>(
       databaseId as string,
       collectionId as string,
       documentId,
