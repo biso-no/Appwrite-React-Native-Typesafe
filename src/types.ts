@@ -1,20 +1,15 @@
 
-export interface Document {
-  $id: string;
-  $collectionId: string;
-  $databaseId: string;
-  $createdAt: string;
-  $updatedAt: string;
-  $permissions: string[];
-}
+import { Models } from 'node-appwrite';
 
-export interface Posts extends Document {
+export interface Document extends Models.Document {}
+
+export interface Posts extends Models.Document {
   title: string;
   content: string;
   created_by: string;
 }
 
-export interface Users extends Document {
+export interface Users extends Models.Document {
   name: string;
   email: string;
   position: string;
@@ -28,17 +23,17 @@ export interface Users extends Document {
   bank_account: string;
 }
 
-export interface News extends Document {
+export interface News extends Models.Document {
   title: string;
   content: string;
   image: string;
   tags: string;
   campus: string;
   unit: string;
-  created_at: any;
+  created_at: Date;
 }
 
-export interface Events extends Document {
+export interface Events extends Models.Document {
   title: string;
   description: string;
   image_id: string;
@@ -47,16 +42,16 @@ export interface Events extends Document {
   price: any;
   member_discount: boolean;
   discount_price: any;
-  event_date: any;
+  event_date: Date;
 }
 
-export interface Devices extends Document {
+export interface Devices extends Models.Document {
   user_id: string;
   token: string;
   users: any;
 }
 
-export interface Expenses extends Document {
+export interface Expenses extends Models.Document {
   users: any;
   campus: string;
   department: string;
@@ -67,34 +62,34 @@ export interface Expenses extends Document {
   status: string;
 }
 
-export interface Expense_attachments extends Document {
+export interface Expense_attachments extends Models.Document {
   description: string;
-  date: any;
+  date: Date;
   amount: any;
   attachment_id: string;
 }
 
-export interface Departments extends Document {
+export interface Departments extends Models.Document {
   Name: string;
   Campus: string;
   socials: string;
   description: string;
 }
 
-export interface Members extends Document {
+export interface Members extends Models.Document {
   
 }
 
-export interface Auth_Tokens extends Document {
+export interface Auth_Tokens extends Models.Document {
   token: string;
 }
 
-export interface Member_Categories extends Document {
+export interface Member_Categories extends Models.Document {
   category_key: string;
   category_name: string;
 }
 
-export interface Customers extends Document {
+export interface Customers extends Models.Document {
   Id: string;
   Name: string;
 }

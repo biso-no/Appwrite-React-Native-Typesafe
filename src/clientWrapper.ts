@@ -1,5 +1,5 @@
-import { Client, Databases } from 'node-appwrite';
-import { DatabaseMap, Document } from './types'; // Ensure this path is correct
+import { Client, Databases, Models } from 'node-appwrite';
+import { DatabaseMap } from './types'; 
 
 class TypedAppwriteClient {
   private client: Client;
@@ -13,7 +13,7 @@ class TypedAppwriteClient {
   async createDocument<
     DatabaseId extends keyof DatabaseMap,
     CollectionId extends keyof DatabaseMap[DatabaseId],
-    T extends DatabaseMap[DatabaseId][CollectionId] & Document // Ensure T extends Document
+    T extends DatabaseMap[DatabaseId][CollectionId] & Models.Document // Ensure T extends Document
   >(
     databaseId: DatabaseId,
     collectionId: CollectionId,
@@ -28,7 +28,7 @@ class TypedAppwriteClient {
     );
   }
 
-  // Implement other methods similarly
+
 }
 
 export default TypedAppwriteClient;

@@ -30,14 +30,9 @@ async function generateTypes(endpoint: string, projectId: string, apiKey: string
     console.log('Databases:', databasesList);
 
     let typeDefinitions = `
-export interface Document {
-  $id: string;
-  $collectionId: string;
-  $databaseId: string;
-  $createdAt: string;
-  $updatedAt: string;
-  $permissions: string[];
-}
+import { Models } from 'node-appwrite';
+
+export interface Document extends Models.Document {}
 `;
 
     let collectionMap = 'export type DatabaseMap = {\n';
@@ -56,6 +51,7 @@ export interface Document {
         console.log('Attributes:', attributes);
 
         const types = attributes.map(attribute => {
+
           const typeMap: { [key: string]: string } = {
             'string': 'string',
             'integer': 'number',
@@ -64,7 +60,9 @@ export interface Document {
             'email': 'string',
             'enum': 'string',
             'url': 'string',
-            // Add more mappings as needed
+            'datetime': 'Date',
+            'ip': 'string',
+            'relationship': 'any',
           };
 
           const attributeType = typeMap[attribute.type] || 'any';
@@ -75,7 +73,7 @@ export interface Document {
         const interfaceName = sanitizedInterfaceName.charAt(0).toUpperCase() + sanitizedInterfaceName.slice(1);
 
         typeDefinitions += `
-export interface ${interfaceName} extends Document {
+export interface ${interfaceName} extends Models.Document {
   ${types.join('\n  ')}
 }\n`;
 
