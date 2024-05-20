@@ -1,15 +1,17 @@
 {
   "name": "node-appwrite-client-wrapper",
-  "version": "0.9.25-alpha",
+  "version": "0.9.26-alpha",
   "description": "",
   "main": "dist/index.js",
+  "exports": {
+    "./dist/generateTypes": "./dist/generateTypes.js"
+  },
   "bin": {
     "generate-types": "dist/generateTypes.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "generate-types": "node src/generateTypes.js",
     "build": "tsc",
     "postinstall": "npm run build",
     "start": "node dist/index.js"
