@@ -3,11 +3,13 @@
   "version": "0.9.21-alpha",
   "description": "",
   "main": "dist/index.js",
-  "bin": "dist/generateTypes.js",
+  "bin": {
+    "generate-types": "dist/generateTypes.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "generate-types": "ts-node dist/generateTypes.js",
+    "generate-types": "generate-types",
     "build": "tsc",
     "postinstall": "npm run build",
     "start": "node dist/index.js"
