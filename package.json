@@ -1,6 +1,6 @@
 {
   "name": "node-appwrite-typesafe-client",
-  "version": "0.1.01-alpha",
+  "version": "0.1.02-alpha",
   "description": "",
   "main": "dist/index.js",
   "exports": {
