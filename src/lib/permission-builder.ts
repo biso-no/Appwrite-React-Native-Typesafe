@@ -5,10 +5,10 @@ export interface PermissionOptions {
     write?: string[],
     delete?: string[],
     update?: string[],
-    [key: string]: any
+    [key: string]: string[] | undefined
   };
   
- export const buildPermissions = (options: PermissionOptions): string[] => {
+  export function buildPermissions(options: PermissionOptions) {
     const permissions: string[] = [];
   
     if (options.read) {

@@ -1,5 +1,5 @@
 import { Client, Databases, Models } from 'node-appwrite';
-import { DatabaseMap } from './types';
+import { DatabaseMap } from './types'; 
 import { buildQueries, QueryOptions } from './lib/query-builder';
 import { buildPermissions, PermissionOptions } from './lib/permission-builder';
 

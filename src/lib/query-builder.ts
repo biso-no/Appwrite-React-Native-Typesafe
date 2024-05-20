@@ -9,7 +9,8 @@ export interface QueryOptions {
   [key: string]: any
 };
 
-export const buildQueries = (options: QueryOptions): string[] => {
+export function buildQueries(options: QueryOptions) {
+  
   const queries: string[] = [];
 
   if (options.equals) {
@@ -44,4 +45,3 @@ export const buildQueries = (options: QueryOptions): string[] => {
 
   return queries;
 };
-
