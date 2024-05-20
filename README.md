@@ -19,9 +19,11 @@ npm install appwrite-client-wrapper
 
 Create a `.env` file in the root of your project to store your Appwrite configuration:
 
+```bash
 APPWRITE_ENDPOINT=https://your-appwrite-endpoint
 APPWRITE_PROJECT_ID=your-project-id
 APPWRITE_API_KEY=your-api-key
+```
 
 ## Usage
 
