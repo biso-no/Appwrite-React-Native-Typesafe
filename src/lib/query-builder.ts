@@ -6,26 +6,36 @@ import { Query } from 'node-appwrite';
 export type QueryOptions = {
   /**
    * Conditions for equality queries.
+   * 
+   * Each condition should specify a `field` and a `value`.
    */
   equals?: { field: string, value: any }[],
   
   /**
    * Conditions for inequality queries.
+   * 
+   * Each condition should specify a `field` and a `value`.
    */
   notEquals?: { field: string, value: any }[],
   
   /**
    * Conditions for less than queries.
+   * 
+   * Each condition should specify a `field` and a `value`.
    */
   lessThan?: { field: string, value: any }[],
   
   /**
    * Conditions for greater than queries.
+   * 
+   * Each condition should specify a `field` and a `value`.
    */
   greaterThan?: { field: string, value: any }[],
   
   /**
    * Conditions for contains queries.
+   * 
+   * Each condition should specify a `field` and a `value`.
    */
   contains?: { field: string, value: any }[],
   
