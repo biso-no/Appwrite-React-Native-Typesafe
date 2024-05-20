@@ -1,7 +1,7 @@
 {
-  "name": "node-appwrite-typesafe-client",
-  "version": "0.1.03-alpha",
-  "description": "",
+  "name": "typesafe-node-appwrite",
+  "version": "0.1.0-alpha",
+  "description": "This package enables you to typesafe your Appwrite APIs by generating TypeScript types automatically.",
   "main": "dist/index.js",
   "types": "dist/declarations/index.d.ts",
   "exports": {
