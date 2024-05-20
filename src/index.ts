@@ -1,1 +1,3 @@
-export { default as TypedAppwriteClient } from './clientWrapper';
+import TypedAppwriteClient from "./clientWrapper";
+
+export { TypedAppwriteClient }
