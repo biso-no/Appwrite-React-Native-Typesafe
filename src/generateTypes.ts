@@ -7,6 +7,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+/**
+ * Represents an attribute in a collection.
+ */
 interface Attribute {
   key: string;
   type: string;
@@ -14,11 +17,23 @@ interface Attribute {
   relatedCollectionId?: string;
 }
 
-
+/**
+ * Sanitizes a type name by replacing non-alphanumeric characters with underscores.
+ * 
+ * @param {string} name - The name to sanitize.
+ * @returns {string} The sanitized name.
+ */
 function sanitizeTypeName(name: string): string {
   return name.replace(/[^a-zA-Z0-9]/g, '_');
 }
 
+/**
+ * Generates TypeScript types based on the Appwrite database schema.
+ * 
+ * @param {string} endpoint - The Appwrite endpoint.
+ * @param {string} projectId - The Appwrite project ID.
+ * @param {string} apiKey - The Appwrite API key.
+ */
 async function generateTypes(endpoint: string, projectId: string, apiKey: string) {
   const client = new Client();
   const databases = new Databases(client);
@@ -102,7 +117,6 @@ export interface ${interfaceName} extends Models.Document {
     console.error('Stack trace:', error.stack);
   }
 }
-
 
 const endpoint = process.env.APPWRITE_ENDPOINT || '';
 const projectId = process.env.APPWRITE_PROJECT_ID || '';
