@@ -1,4 +1,4 @@
-import { Client, Databases, Models } from 'node-appwrite';
+import { Client, Databases, Models, Permission, Query } from 'node-appwrite';
 import { DatabaseMap } from './types'; 
 
 class TypedAppwriteClient {
@@ -19,32 +19,32 @@ class TypedAppwriteClient {
     collectionId: CollectionId,
     documentId: string = 'unique()',
     data: Omit<T, '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>,
-    permissions?: string[]
+    permissions?: Permission[]
   ) {
     return await this.databases.createDocument<T>(
       databaseId as string,
       collectionId as string,
       documentId,
       data,
-      permissions
+      permissions as string[]
     );
   }
 
   async listDocuments<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId]>(
     databaseId: DatabaseId,
     collectionId: CollectionId,
-    queries?: string[]
+    queries?: Query[]
   ) {
-    return await this.databases.listDocuments(databaseId as string, collectionId as string, queries);
+    return await this.databases.listDocuments(databaseId as string, collectionId as string, queries as string[]);
   }
 
   async getDocument<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId], DocumentId extends keyof DatabaseMap[DatabaseId][CollectionId]>(
     databaseId: DatabaseId,
     collectionId: CollectionId,
     documentId: DocumentId,
-    queries?: string[]
+    queries?: Query[]
   ) {
-    return await this.databases.getDocument(databaseId as string, collectionId as string, documentId as string, queries);
+    return await this.databases.getDocument(databaseId as string, collectionId as string, documentId as string, queries as string[]);
   }
 
   async updateDocument<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId], DocumentId extends keyof DatabaseMap[DatabaseId][CollectionId]>(
@@ -52,14 +52,14 @@ class TypedAppwriteClient {
     collectionId: CollectionId,
     documentId: DocumentId,
     data: Partial<Omit<DatabaseMap[DatabaseId][CollectionId][DocumentId], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>>,
-    permissions?: string[]
+    permissions?: Permission[]
   ) {
     return await this.databases.updateDocument(
       databaseId as string,
       collectionId as string,
       documentId as string,
       data,
-      permissions
+      permissions as string[]
     );
   }
 
@@ -75,9 +75,9 @@ class TypedAppwriteClient {
     );
   }
 
-  async listCollections<DatabaseId extends keyof DatabaseMap>(databaseId: DatabaseId, queries?: string[], search?: string) {
+  async listCollections<DatabaseId extends keyof DatabaseMap>(databaseId: DatabaseId, queries?: Query[], search?: string) {
     
-    return await this.databases.listCollections(databaseId as string, queries, search);
+    return await this.databases.listCollections(databaseId as string, queries as string[], search);
   }
 
   async getCollection<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId]>(
@@ -91,7 +91,7 @@ class TypedAppwriteClient {
     databaseId: DatabaseId,
     collectionId: CollectionId,
     name: string,
-    permissions?: string[],
+    permissions?: Permission[],
     security?: boolean,
     enabled?: boolean
   ) {
@@ -99,7 +99,7 @@ class TypedAppwriteClient {
       databaseId as string,
       collectionId as string,
       name,
-      permissions,
+      permissions as string[],
       security,
       enabled
     );
@@ -115,8 +115,8 @@ class TypedAppwriteClient {
     );
   }
 
-  async listDatabases(queries?: string[], search?: string) {
-    return await this.databases.list(queries, search);
+  async listDatabases(queries?: Query[], search?: string) {
+    return await this.databases.list(queries as string[], search);
   }
 
   async getDatabase<DatabaseId extends keyof DatabaseMap>(databaseId: DatabaseId) {
@@ -148,12 +148,12 @@ class TypedAppwriteClient {
   async listAttributes<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId], DocumentId extends keyof DatabaseMap[DatabaseId][CollectionId]>(
     databaseId: DatabaseId,
     collectionId: CollectionId,
-    queries: string[]
+    queries: Query[]
   ) {
     return await this.databases.listAttributes(
       databaseId as string,
       collectionId as string,
-      queries
+      queries as string[]
     );
   }
 
