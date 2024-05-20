@@ -1,8 +1,9 @@
 {
   "name": "node-appwrite-typesafe-client",
-  "version": "0.1.02-alpha",
+  "version": "0.1.03-alpha",
   "description": "",
   "main": "dist/index.js",
+  "types": "dist/declarations/index.d.ts",
   "exports": {
     "./dist/generateTypes": "./dist/generateTypes.js"
   },
