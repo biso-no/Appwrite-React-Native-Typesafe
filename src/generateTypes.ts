@@ -5,7 +5,6 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
-
 interface Attribute {
   key: string;
   type: string;
@@ -52,7 +51,6 @@ export interface Document extends Models.Document {}
         console.log('Attributes:', attributes);
 
         const types = attributes.map(attribute => {
-
           const typeMap: { [key: string]: string } = {
             'string': 'string',
             'integer': 'number',
@@ -88,7 +86,7 @@ export interface ${interfaceName} extends Models.Document {
     collectionMap += '};\n';
 
     fs.writeFileSync(
-      path.join(__dirname, './types.ts'),
+      path.join(__dirname, '../dist/types.ts'),
       typeDefinitions + '\n' + collectionMap
     );
 
