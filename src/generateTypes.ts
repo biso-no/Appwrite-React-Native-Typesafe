@@ -13,6 +13,7 @@ dotenv.config();
 interface Attribute {
   key: string;
   type: string;
+  required: boolean;
   relationType?: string;
   relatedCollectionId?: string;
 }
@@ -86,7 +87,8 @@ export interface Document extends Models.Document {}
           };
 
           const attributeType = typeMap[attribute.type] || 'any';
-          return `${attribute.key}: ${attributeType};`;
+          const optionalFlag = attribute.required ? '' : '?';
+          return `${attribute.key}${optionalFlag}: ${attributeType};`;
         });
 
         const sanitizedInterfaceName = sanitizeTypeName(collection.name);
