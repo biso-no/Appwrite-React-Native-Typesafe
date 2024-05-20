@@ -1,8 +1,8 @@
 {
   "name": "node-appwrite-client-wrapper",
-  "version": "0.9.16-alpha",
+  "version": "0.9.17-alpha",
   "description": "",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "bin": {
     "generate-types": "./dist/generateTypes.js"
   },
@@ -16,7 +16,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "appwrite": "^14.0.1",
     "dotenv": "^16.4.5",
