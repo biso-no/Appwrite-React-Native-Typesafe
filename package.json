@@ -1,7 +1,7 @@
 {
-  "name": "node-appwrite-typesafe-client",
-  "version": "0.1.08-alpha",
-  "description": "",
+  "name": "typesafe-node-appwrite",
+  "version": "0.1.1-alpha",
+  "description": "This package enables you to typesafe your Appwrite APIs by generating TypeScript types automatically.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
@@ -23,7 +23,7 @@
     "generate-types": "node dist/generateTypes.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Markus Heien",
   "license": "MIT",
   "dependencies": {
     "appwrite": "^14.0.1",
