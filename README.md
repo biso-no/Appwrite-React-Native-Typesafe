@@ -1,19 +1,22 @@
-# Typesafe Node Appwrite Client
-Typesafe Node Appwrite is a utility that automatically generates TypeScript types based on your Appwrite database schema. This ensures type safety and improves the developer experience when working with Appwrite databases. It will also wrap your Appwrite client with `TypedAppwriteClient` to ensure type safety in your functions.
+**DISCLAIMER:** This project is under active development and is updated regularly. The README may not always reflect the most recent changes.
+
+# Introduction
+This package is a utility that automatically generates TypeScript types based on your Appwrite database schema. This ensures type safety and improves the developer experience when working with Appwrite databases.
+- Simply provide the necessary Appwrite credentials, run the script and wrap your Appwrite client, and you're good to go!
 
 ## Features
 
 - Automatically generates TypeScript types for your Appwrite database collections and attributes.
 - Ensures type safety when interacting with Appwrite databases.
 - Configurable via environment variables.
-- Wrap your client with `TypedAppwriteClient` to ensure type safety.
+- Create a new `TypedAppwriteClient` instance wrapping your Appwrite client.
 - Configurable via environment variables.
 
 ## Installation
 
 Install the package via npm:
 
-npm install typesafe-node-appwrite
+yarn add typesafe-node-appwrite
 
 ## Configuration
 
@@ -32,7 +35,7 @@ APPWRITE_API_KEY="your-api-key"
 To generate TypeScript types based on your Appwrite database schema, run the following command:
 
 ```bash
-npm run generate-types
+yarn generate-types
 ```
 
 This command will automatically create types from your Appwrite database, and output them into the client.
@@ -41,6 +44,9 @@ This command will automatically create types from your Appwrite database, and ou
 
 To typesafe your database APIs, simply wrap your existing appwrite client inside `TypedAppwriteClient`.
 This enables suggestions in your functions based on the generated types.
+
+- I have also improved the structure to streamline the development experience a bit, with a more object based approach. Take a look at the example below.
+- Most of the methods are also documented.
 
 ### Example
 
@@ -58,10 +64,25 @@ client
 
 const typedClient = new TypedAppwriteClient(client);
 
-const createDocument = await typedClient.createDocument('databaseId', 'collectionId', 'documentId', { name: 'Test Document' }, ['read', 'write']);
+    await appwriteClient.createDocument({
+        databaseId: "app",
+        collectionId: "posts",
+        documentId: "test",
+        data: {
+            content: "Some title",
+            title: "Lorem ipsum and so on...",
+            created_by: "Markus Heien",
+        },
+        permissions: {
+            read: ["guests", "users"],
+            write: ["users"],
+        },
+    })
 ```
 
-Try it out, remove the strings, and you will see the correct names.
+## Troubleshooting
+
+If you encounter any issues with the generated types, please open an issue or submit a pull request with your changes.
 
 ## Development
 
@@ -70,7 +91,12 @@ Try it out, remove the strings, and you will see the correct names.
 - Node.js
 - preferably pnpm or yarn
 - Appwrite server
-- node-appwrite
+
+```bash
+git clone https://github.com/MHeien/typesafe-node-appwrite.git
+cd typesafe-node-appwrite
+yarn
+```
 
 ## Contributing
 
