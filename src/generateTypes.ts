@@ -10,11 +10,13 @@ dotenv.config();
 interface Attribute {
   key: string;
   type: string;
+  relationType?: string;
+  relatedCollectionId?: string;
 }
 
-// Function to sanitize type names
+
 function sanitizeTypeName(name: string): string {
-  return name.replace(/[^a-zA-Z0-9]/g, '_'); // Replace non-alphanumeric characters with underscores
+  return name.replace(/[^a-zA-Z0-9]/g, '_');
 }
 
 async function generateTypes(endpoint: string, projectId: string, apiKey: string) {
@@ -63,7 +65,9 @@ export interface Document extends Models.Document {}
             'url': 'string',
             'datetime': 'Date',
             'ip': 'string',
-            'relationship': 'any',
+            'relationship': attribute.relationType === 'oneToMany' || attribute.relationType === 'manyToMany'
+              ? `${sanitizeTypeName(attribute.relatedCollectionId || '')}[]`
+              : sanitizeTypeName(attribute.relatedCollectionId || '')
           };
 
           const attributeType = typeMap[attribute.type] || 'any';
@@ -99,7 +103,7 @@ export interface ${interfaceName} extends Models.Document {
   }
 }
 
-// Load configuration from environment variables
+
 const endpoint = process.env.APPWRITE_ENDPOINT || '';
 const projectId = process.env.APPWRITE_PROJECT_ID || '';
 const apiKey = process.env.APPWRITE_API_KEY || '';

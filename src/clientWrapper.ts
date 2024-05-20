@@ -1,5 +1,5 @@
 import { Client, Databases, Models } from 'node-appwrite';
-import { DatabaseMap } from './types'; 
+import { DatabaseMap } from './types';
 import { buildQueries, QueryOptions } from './lib/query-builder';
 import { buildPermissions, PermissionOptions } from './lib/permission-builder';
 
@@ -26,7 +26,7 @@ class TypedAppwriteClient {
     }
   ) {
     const { databaseId, collectionId, documentId = 'unique()', data, permissions } = options;
-    const permissionList = permissions ? permissions.build() : [];
+    const permissionList = permissions ? buildPermissions(permissions) : [];
     return await this.databases.createDocument<T>(
       databaseId as string,
       collectionId as string,
@@ -50,7 +50,7 @@ class TypedAppwriteClient {
     return await this.databases.listDocuments(databaseId as string, collectionId as string, queryList);
   }
 
-  async getDocument<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId], DocumentId extends keyof DatabaseMap[DatabaseId][CollectionId]>(
+  async getDocument<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId], DocumentId extends string>(
     options: {
       databaseId: DatabaseId,
       collectionId: CollectionId,
@@ -63,12 +63,12 @@ class TypedAppwriteClient {
     return await this.databases.getDocument(databaseId as string, collectionId as string, documentId as string, queryList);
   }
 
-  async updateDocument<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId], DocumentId extends keyof DatabaseMap[DatabaseId][CollectionId]>(
+  async updateDocument<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId], DocumentId extends string>(
     options: {
       databaseId: DatabaseId,
       collectionId: CollectionId,
       documentId: DocumentId,
-      data: Partial<Omit<DatabaseMap[DatabaseId][CollectionId][DocumentId], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>>,
+      data: Partial<Omit<DatabaseMap[DatabaseId][CollectionId], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>>,
       permissions?: PermissionOptions
     }
   ) {
@@ -83,7 +83,7 @@ class TypedAppwriteClient {
     );
   }
 
-  async deleteDocument<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId], DocumentId extends keyof DatabaseMap[DatabaseId][CollectionId]>(
+  async deleteDocument<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId], DocumentId extends string>(
     options: {
       databaseId: DatabaseId,
       collectionId: CollectionId,
@@ -217,6 +217,51 @@ class TypedAppwriteClient {
       collectionId as string,
       queryList
     );
+  }
+
+  async getRelatedDocuments<
+    DatabaseId extends keyof DatabaseMap,
+    CollectionId extends keyof DatabaseMap[DatabaseId],
+    DocumentId extends string,
+    RelatedCollectionId extends keyof DatabaseMap[DatabaseId]
+  >(
+    options: {
+      databaseId: DatabaseId,
+      collectionId: CollectionId,
+      documentId: DocumentId,
+      relatedCollectionId: RelatedCollectionId,
+      relationType: 'oneToOne' | 'oneToMany' | 'manyToMany',
+      queries?: QueryOptions
+    }
+  ) {
+    const { databaseId, collectionId, documentId, relatedCollectionId, relationType, queries } = options;
+    const queryList = queries ? buildQueries(queries) : [];
+
+    if (relationType === 'oneToOne' || relationType === 'oneToMany') {
+
+      const mainDocument = await this.getDocument({
+        databaseId,
+        collectionId,
+        documentId
+      });
+
+      const relatedDocuments = await this.listDocuments({
+        databaseId,
+        collectionId: relatedCollectionId,
+        queries: {
+          equals: [{ field: 'relatedField', value: mainDocument.$id }]
+        }
+      });
+
+      return relatedDocuments;
+    }
+
+
+    return await this.listDocuments({
+      databaseId,
+      collectionId: relatedCollectionId,
+      queries: queryList
+    });
   }
 }
 
