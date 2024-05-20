@@ -86,7 +86,7 @@ export interface ${interfaceName} extends Models.Document {
     collectionMap += '};\n';
 
     fs.writeFileSync(
-      path.join(__dirname, '../dist/types.ts'),
+      path.join(__dirname, 'types.ts'),  // Correct path for output file
       typeDefinitions + '\n' + collectionMap
     );
 
