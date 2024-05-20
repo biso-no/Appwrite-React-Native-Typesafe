@@ -1,18 +1,19 @@
-# Appwrite TypeScript Types Generator
-
-Appwrite TypeScript Types Generator is a utility that automatically generates TypeScript types based on your Appwrite database schema. This ensures type safety and improves the developer experience when working with Appwrite databases.
+# Appwrite Client Wrapper
+Appwrite Client Wrapper is a utility that automatically generates TypeScript types based on your Appwrite database schema. This ensures type safety and improves the developer experience when working with Appwrite databases.
 
 ## Features
 
 - Automatically generates TypeScript types for your Appwrite database collections and attributes.
 - Ensures type safety when interacting with Appwrite databases.
 - Configurable via environment variables.
+- Wrap your client with `TypedAppwriteClient` to ensure type safety.
+- Configurable via environment variables.
 
 ## Installation
 
 Install the package via npm:
 
-npm install appwrite-types-generator
+npm install appwrite-client-wrapper
 
 ## Configuration
 
@@ -28,7 +29,9 @@ APPWRITE_API_KEY=your-api-key
 
 To generate TypeScript types based on your Appwrite database schema, run the following command:
 
+```bash
 npm run generate-types
+```
 
 This command will generate a `types.ts` file in the `src` directory containing TypeScript interfaces for your collections and a `DatabaseMap` type.
 
@@ -40,6 +43,7 @@ You can use the generated types in your project to ensure type safety when inter
 
 Here's an example of how to use the generated types and the `TypedAppwriteClient` class:
 
+```typescript
 import TypedAppwriteClient from 'appwrite-types-generator/dist/clientWrapper';
 import dotenv from 'dotenv';
 
@@ -74,6 +78,7 @@ async function main() {
 }
 
 main();
+```
 
 ## Development
 
@@ -85,14 +90,10 @@ main();
 
 ### Running Locally
 
-1. Clone the repository:
+1. Install the package
 
-   git clone https://github.com/your-username/appwrite-types-generator.git
+   npm install appwrite-client-wrapper
    cd appwrite-types-generator
-
-2. Install dependencies:
-
-   npm install
 
 3. Create a `.env` file with your Appwrite configuration:
 
@@ -102,15 +103,18 @@ main();
 
 4. Generate TypeScript types:
 
-   npm run generate-types
+   npx generate-types
 
-5. Build the project:
+5. Wrap your Appwrite client
 
-   npm run build
+```typescript
+import TypedAppwriteClient from 'appwrite-client-wrapper';
+import { Client } from 'node-appwrite';
 
-6. Run the example script:
+const client = new Client();
 
-   npm start
+const typedClient = new TypedAppwriteClient(client);
+```
 
 ## Contributing
 
