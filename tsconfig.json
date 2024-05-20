@@ -10,6 +10,6 @@
     "declaration": true,
     "declarationDir": "./dist"
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "index.ts"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "index.ts", "dist/**/*.ts", "dist/**/*.d.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

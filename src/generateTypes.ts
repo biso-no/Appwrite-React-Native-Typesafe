@@ -94,8 +94,9 @@ export interface ${interfaceName} extends Models.Document {
     );
 
     console.log('TypeScript types generated successfully.');
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error generating TypeScript types:', error);
+    console.error('Stack trace:', error.stack);
   }
 }
 
