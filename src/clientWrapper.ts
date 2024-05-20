@@ -1,4 +1,4 @@
-import { Client, Databases, Models } from 'node-appwrite';
+import { Client, Databases, Models, Permission, Query } from 'node-appwrite';
 import { DatabaseMap } from './types'; 
 import { buildQueries, QueryOptions } from './lib/query-builder';
 import { buildPermissions, PermissionOptions } from './lib/permission-builder';
@@ -238,7 +238,6 @@ class TypedAppwriteClient {
     const queryList = queries ? buildQueries(queries) : [];
 
     if (relationType === 'oneToOne' || relationType === 'oneToMany') {
-
       const mainDocument = await this.getDocument({
         databaseId,
         collectionId,
@@ -255,8 +254,7 @@ class TypedAppwriteClient {
 
       return relatedDocuments;
     }
-
-
+    
     return await this.listDocuments({
       databaseId,
       collectionId: relatedCollectionId,

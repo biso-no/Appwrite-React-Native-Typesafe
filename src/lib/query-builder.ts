@@ -1,6 +1,6 @@
 import { Query } from 'node-appwrite';
 
-export interface QueryOptions {
+export type QueryOptions = {
   equals?: { field: string, value: any }[],
   notEquals?: { field: string, value: any }[],
   lessThan?: { field: string, value: any }[],
@@ -9,8 +9,7 @@ export interface QueryOptions {
   [key: string]: any
 };
 
-export function buildQueries(options: QueryOptions) {
-  
+export const buildQueries = (options: QueryOptions): string[] => {
   const queries: string[] = [];
 
   if (options.equals) {

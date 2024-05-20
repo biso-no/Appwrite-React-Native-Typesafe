@@ -1,14 +1,22 @@
 import { Permission, Role } from 'node-appwrite';
 
-export interface PermissionOptions {
-    read?: string[],
-    write?: string[],
-    delete?: string[],
-    update?: string[],
-    [key: string]: string[] | undefined
+type RoleString =
+  | "any"
+  | "guests"
+  | "users"
+  | `user:${string}`
+  | `team:${string}:${string}`
+  | `label:${string}`;
+
+export type PermissionOptions = {
+    read?: RoleString[],
+    write?: RoleString[],
+    delete?: RoleString[],
+    update?: RoleString[],
+    [key: string]: RoleString[] | undefined
   };
   
-  export function buildPermissions(options: PermissionOptions) {
+export const buildPermissions = (options: PermissionOptions): string[] => {
     const permissions: string[] = [];
   
     if (options.read) {
