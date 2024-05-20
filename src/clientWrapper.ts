@@ -1,5 +1,7 @@
-import { Client, Databases, Models, Permission, Query } from 'node-appwrite';
+import { Client, Databases, Models } from 'node-appwrite';
 import { DatabaseMap } from './types'; 
+import { QueryBuilder } from './lib/query-builder';
+import { PermissionBuilder } from './lib/permission-builder';
 
 class TypedAppwriteClient {
   private client: Client;
@@ -13,23 +15,24 @@ class TypedAppwriteClient {
   async createDocument<
     DatabaseId extends keyof DatabaseMap,
     CollectionId extends keyof DatabaseMap[DatabaseId],
-    T extends DatabaseMap[DatabaseId][CollectionId] & Models.Document // Ensure T extends Document
+    T extends DatabaseMap[DatabaseId][CollectionId] & Models.Document
   >(
     options: {
       databaseId: DatabaseId,
       collectionId: CollectionId,
       documentId?: string,
       data: Omit<T, '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>,
-      permissions?: Permission[]
+      permissions?: PermissionBuilder
     }
   ) {
     const { databaseId, collectionId, documentId = 'unique()', data, permissions } = options;
+    const permissionList = permissions ? permissions.build() : [];
     return await this.databases.createDocument<T>(
       databaseId as string,
       collectionId as string,
       documentId,
       data,
-      permissions as string[]
+      permissionList
     );
   }
 
@@ -37,11 +40,14 @@ class TypedAppwriteClient {
     options: {
       databaseId: DatabaseId,
       collectionId: CollectionId,
-      queries?: Query[]
+      queryBuilder?: QueryBuilder
     }
   ) {
-    const { databaseId, collectionId, queries } = options;
-    return await this.databases.listDocuments(databaseId as string, collectionId as string, queries as string[]);
+    const { databaseId, collectionId, queryBuilder } = options;
+
+    const queries = queryBuilder ? queryBuilder.build() : [];
+
+    return await this.databases.listDocuments(databaseId as string, collectionId as string, queries);
   }
 
   async getDocument<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId], DocumentId extends keyof DatabaseMap[DatabaseId][CollectionId]>(
@@ -49,10 +55,11 @@ class TypedAppwriteClient {
       databaseId: DatabaseId,
       collectionId: CollectionId,
       documentId: DocumentId,
-      queries?: Query[]
+      queryBuilder?: QueryBuilder
     }
   ) {
-    const { databaseId, collectionId, documentId, queries } = options;
+    const { databaseId, collectionId, documentId, queryBuilder } = options;
+    const queries = queryBuilder ? queryBuilder.build() : [];
     return await this.databases.getDocument(databaseId as string, collectionId as string, documentId as string, queries as string[]);
   }
 
@@ -62,16 +69,17 @@ class TypedAppwriteClient {
       collectionId: CollectionId,
       documentId: DocumentId,
       data: Partial<Omit<DatabaseMap[DatabaseId][CollectionId][DocumentId], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>>,
-      permissions?: Permission[]
+      permissions?: PermissionBuilder
     }
   ) {
     const { databaseId, collectionId, documentId, data, permissions } = options;
+    const permissionList = permissions ? permissions.build() : [];
     return await this.databases.updateDocument(
       databaseId as string,
       collectionId as string,
       documentId as string,
       data,
-      permissions as string[]
+      permissionList
     );
   }
 
@@ -93,12 +101,13 @@ class TypedAppwriteClient {
   async listCollections<DatabaseId extends keyof DatabaseMap>(
     options: {
       databaseId: DatabaseId,
-      queries?: Query[],
+      queries?: QueryBuilder,
       search?: string
     }
   ) {
     const { databaseId, queries, search } = options;
-    return await this.databases.listCollections(databaseId as string, queries as string[], search);
+    const queryBuilder = queries ? queries.build() : [];
+    return await this.databases.listCollections(databaseId as string, queryBuilder, search);
   }
 
   async getCollection<DatabaseId extends keyof DatabaseMap, CollectionId extends keyof DatabaseMap[DatabaseId]>(
@@ -116,17 +125,18 @@ class TypedAppwriteClient {
       databaseId: DatabaseId,
       collectionId: CollectionId,
       name: string,
-      permissions?: Permission[],
+      permissions?: PermissionBuilder,
       security?: boolean,
       enabled?: boolean
     }
   ) {
     const { databaseId, collectionId, name, permissions, security, enabled } = options;
+    const permissionList = permissions ? permissions.build() : [];
     return await this.databases.updateCollection(
       databaseId as string,
       collectionId as string,
       name,
-      permissions as string[],
+      permissionList,
       security,
       enabled
     );
@@ -145,9 +155,10 @@ class TypedAppwriteClient {
     );
   }
 
-  async listDatabases(options?: { queries?: Query[], search?: string }) {
+  async listDatabases(options?: { queries?: QueryBuilder, search?: string }) {
     const { queries, search } = options || {};
-    return await this.databases.list(queries as string[], search);
+    const queryBuilder = queries ? queries.build() : [];
+    return await this.databases.list(queryBuilder, search);
   }
 
   async getDatabase<DatabaseId extends keyof DatabaseMap>(options: { databaseId: DatabaseId }) {
@@ -196,14 +207,15 @@ class TypedAppwriteClient {
     options: {
       databaseId: DatabaseId,
       collectionId: CollectionId,
-      queries: Query[]
+      queries: QueryBuilder
     }
   ) {
     const { databaseId, collectionId, queries } = options;
+    const queryBuilder = queries ? queries.build() : [];
     return await this.databases.listAttributes(
       databaseId as string,
       collectionId as string,
-      queries as string[]
+      queryBuilder
     );
   }
 }
