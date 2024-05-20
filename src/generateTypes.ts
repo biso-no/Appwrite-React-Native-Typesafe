@@ -50,7 +50,37 @@ async function generateTypes(endpoint: string, projectId: string, apiKey: string
     console.log('Databases:', databasesList);
 
     let typeDefinitions = `
-import { Models } from 'node-appwrite';
+import { Models, Permission } from 'node-appwrite';
+
+/**
+ * Represents different role strings that can be used for permissions.
+ * 
+ * The following roles are supported:
+ * - "any": Any user, authenticated or not.
+ * - "guests": Any unauthenticated user.
+ * - "users": Any authenticated user.
+ * - "user:<user-id>": A specific user by their user ID.
+ * - "team:<team-id>:<role>": A specific team and role.
+ * - "label:<label>": A specific label.
+ */
+type RoleString =
+  | "any"
+  | "guests"
+  | "users"
+  | \`user:\${string}\`
+  | \`team:\${string}:\${string}\`
+  | \`label:\${string}\`;
+
+/**
+ * Options for configuring permissions.
+ */
+export type PermissionOptions = {
+  read?: RoleString[],
+  write?: RoleString[],
+  delete?: RoleString[],
+  update?: RoleString[],
+  [key: string]: RoleString[] | undefined
+};
 
 export interface Document extends Models.Document {}
 `;
@@ -97,6 +127,7 @@ export interface Document extends Models.Document {}
         typeDefinitions += `
 export interface ${interfaceName} extends Models.Document {
   ${types.join('\n  ')}
+  permissions?: PermissionOptions;
 }\n`;
 
         databaseCollectionMap += `    '${collection.$id}': ${interfaceName};\n`;
