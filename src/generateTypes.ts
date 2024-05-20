@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Client, Databases, Models } from 'node-appwrite';
 import fs from 'fs';
 import path from 'path';
