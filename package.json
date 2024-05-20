@@ -1,6 +1,6 @@
 {
   "name": "appwrite-client-wrapper",
-  "version": "0.9.12-alpha",
+  "version": "0.9.14-alpha",
   "description": "",
   "main": "src/index.ts",
   "bin": {
