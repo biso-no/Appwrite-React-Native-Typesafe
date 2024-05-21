@@ -1,9 +1,9 @@
 import { Client, Databases, Models } from 'node-appwrite';
+import { DatabaseMap } from './types'; 
 import { buildQueries, QueryOptions } from './lib/query-builder';
 import { buildPermissions, PermissionOptions } from './lib/permission-builder';
-import type { DatabaseMap as DatabaseMapTypes } from './types';
-import path from 'path';
 
+<<<<<<< HEAD
 const TYPES_PATH = process.env.TYPES_PATH || path.join(process.cwd(), 'types'); 
 
 // Use dynamic import to load the types
@@ -22,6 +22,10 @@ loadDatabaseMap().then((map) => {
 
 type DatabaseId = keyof typeof DatabaseMap;
 type CollectionId<DB extends DatabaseId> = keyof typeof DatabaseMap[DB];
+=======
+type DatabaseId = keyof DatabaseMap;
+type CollectionId<DB extends DatabaseId> = keyof DatabaseMap[DB];
+>>>>>>> parent of 58c5f57 (Dynamic types path?)
 
 class TypedAppwriteClient {
   private client: Client;
@@ -40,13 +44,13 @@ class TypedAppwriteClient {
       databaseId: DB,
       collectionId: COL,
       documentId?: string,
-      data: Omit<typeof DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>,
+      data: Omit<DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>,
       permissions?: PermissionOptions
     }
-  ): Promise<typeof DatabaseMap[DB][COL] & Models.Document> {
+  ): Promise<DatabaseMap[DB][COL] & Models.Document> {
     const { databaseId, collectionId, documentId = 'unique()', data, permissions } = options;
     const permissionList = permissions ? buildPermissions(permissions) : [];
-    return await this.databases.createDocument<typeof DatabaseMap[DB][COL]>(
+    return await this.databases.createDocument<DatabaseMap[DB][COL]>(
       databaseId as string,
       collectionId as string,
       documentId,
@@ -94,7 +98,7 @@ class TypedAppwriteClient {
       databaseId: DB,
       collectionId: COL,
       documentId: DocId,
-      data: Partial<Omit<typeof DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>>,
+      data: Partial<Omit<DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>>,
       permissions?: PermissionOptions
     }
   ) {

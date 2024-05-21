@@ -93,7 +93,7 @@ If you encounter any issues with the generated types, please open an issue or su
 - Appwrite server
 
 ```bash
-git clone https://github.com/MHEien/Appwrite-Client-wrapper.git
+git clone https://github.com/MHeien/typesafe-node-appwrite.git
 cd typesafe-node-appwrite
 yarn
 ```

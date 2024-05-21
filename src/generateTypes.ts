@@ -34,9 +34,12 @@ function sanitizeTypeName(name: string): string {
  * @param {string} endpoint - The Appwrite endpoint.
  * @param {string} projectId - The Appwrite project ID.
  * @param {string} apiKey - The Appwrite API key.
- * @param {string} outputPath - The path where the generated types file should be saved.
  */
+<<<<<<< HEAD
 async function generateTypes(endpoint: string, projectId: string, apiKey: string, outputPath: string = path.join(process.cwd(), 'types')) {
+=======
+async function generateTypes(endpoint: string, projectId: string, apiKey: string) {
+>>>>>>> parent of 58c5f57 (Dynamic types path?)
   const client = new Client();
   const databases = new Databases(client);
 
@@ -144,11 +147,11 @@ export interface ${interfaceName} extends Models.Document {
     fs.mkdirSync(outputPath, { recursive: true });
     
     fs.writeFileSync(
-      path.resolve(outputPath, 'types.ts'),  // Use the provided output path
+      path.join(__dirname, 'types.ts'),  // Correct path for output file
       typeDefinitions + '\n' + collectionMap
     );
 
-    console.log('TypeScript types generated successfully at:', outputPath);
+    console.log('TypeScript types generated successfully.');
   } catch (error: any) {
     console.error('Error generating TypeScript types:', error);
     console.error('Stack trace:', error.stack);
@@ -158,11 +161,14 @@ export interface ${interfaceName} extends Models.Document {
 const endpoint = process.env.APPWRITE_ENDPOINT || '';
 const projectId = process.env.APPWRITE_PROJECT_ID || '';
 const apiKey = process.env.APPWRITE_API_KEY || '';
+<<<<<<< HEAD
 const outputPath = process.argv[2] || path.join(process.cwd(), 'types'); // Default to project root
+=======
+>>>>>>> parent of 58c5f57 (Dynamic types path?)
 
 if (!endpoint || !projectId || !apiKey) {
   console.error('Please provide APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID, and APPWRITE_API_KEY as environment variables.');
   process.exit(1);
 }
 
-generateTypes(endpoint, projectId, apiKey, outputPath);
+generateTypes(endpoint, projectId, apiKey);
