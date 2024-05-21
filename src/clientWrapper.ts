@@ -4,13 +4,21 @@ import { buildPermissions, PermissionOptions } from './lib/permission-builder';
 import type { DatabaseMap as DatabaseMapTypes } from './types';
 import path from 'path';
 
-const TYPES_PATH = process.env.TYPES_PATH || path.join(__dirname, 'types');
+const TYPES_PATH = process.env.TYPES_PATH || path.join(process.cwd(), 'types'); 
 
+// Use dynamic import to load the types
+async function loadDatabaseMap() {
+  const typesModule = await import(path.resolve(TYPES_PATH, 'types'));
+  return typesModule.DatabaseMap as DatabaseMapTypes;
+}
 
+let DatabaseMap: DatabaseMapTypes;
 
-
-const DatabaseMap = require(path.resolve(TYPES_PATH, 'types')).DatabaseMap;
-
+loadDatabaseMap().then((map) => {
+  DatabaseMap = map;
+}).catch((error) => {
+  console.error('Error loading types:', error);
+});
 
 type DatabaseId = keyof typeof DatabaseMap;
 type CollectionId<DB extends DatabaseId> = keyof typeof DatabaseMap[DB];

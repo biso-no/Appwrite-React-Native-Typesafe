@@ -36,7 +36,7 @@ function sanitizeTypeName(name: string): string {
  * @param {string} apiKey - The Appwrite API key.
  * @param {string} outputPath - The path where the generated types file should be saved.
  */
-async function generateTypes(endpoint: string, projectId: string, apiKey: string, outputPath: string = path.join(__dirname, 'types')) {
+async function generateTypes(endpoint: string, projectId: string, apiKey: string, outputPath: string = path.join(process.cwd(), 'types')) {
   const client = new Client();
   const databases = new Databases(client);
 
@@ -140,6 +140,9 @@ export interface ${interfaceName} extends Models.Document {
 
     collectionMap += '};\n';
 
+    // Ensure the directory exists before writing the file
+    fs.mkdirSync(outputPath, { recursive: true });
+    
     fs.writeFileSync(
       path.resolve(outputPath, 'types.ts'),  // Use the provided output path
       typeDefinitions + '\n' + collectionMap
@@ -155,7 +158,7 @@ export interface ${interfaceName} extends Models.Document {
 const endpoint = process.env.APPWRITE_ENDPOINT || '';
 const projectId = process.env.APPWRITE_PROJECT_ID || '';
 const apiKey = process.env.APPWRITE_API_KEY || '';
-const outputPath = process.argv[2] || path.join(__dirname, 'types');
+const outputPath = process.argv[2] || path.join(process.cwd(), 'types'); // Default to project root
 
 if (!endpoint || !projectId || !apiKey) {
   console.error('Please provide APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID, and APPWRITE_API_KEY as environment variables.');
