@@ -34,8 +34,9 @@ function sanitizeTypeName(name: string): string {
  * @param {string} endpoint - The Appwrite endpoint.
  * @param {string} projectId - The Appwrite project ID.
  * @param {string} apiKey - The Appwrite API key.
+ * @param {string} outputPath - The path where the generated types file should be saved.
  */
-async function generateTypes(endpoint: string, projectId: string, apiKey: string) {
+async function generateTypes(endpoint: string, projectId: string, apiKey: string, outputPath: string = path.join(__dirname, 'types')) {
   const client = new Client();
   const databases = new Databases(client);
 
@@ -140,11 +141,11 @@ export interface ${interfaceName} extends Models.Document {
     collectionMap += '};\n';
 
     fs.writeFileSync(
-      path.join(__dirname, 'types.ts'),  // Correct path for output file
+      path.resolve(outputPath, 'types.ts'),  // Use the provided output path
       typeDefinitions + '\n' + collectionMap
     );
 
-    console.log('TypeScript types generated successfully.');
+    console.log('TypeScript types generated successfully at:', outputPath);
   } catch (error: any) {
     console.error('Error generating TypeScript types:', error);
     console.error('Stack trace:', error.stack);
@@ -154,10 +155,11 @@ export interface ${interfaceName} extends Models.Document {
 const endpoint = process.env.APPWRITE_ENDPOINT || '';
 const projectId = process.env.APPWRITE_PROJECT_ID || '';
 const apiKey = process.env.APPWRITE_API_KEY || '';
+const outputPath = process.argv[2] || path.join(__dirname, 'types');
 
 if (!endpoint || !projectId || !apiKey) {
   console.error('Please provide APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID, and APPWRITE_API_KEY as environment variables.');
   process.exit(1);
 }
 
-generateTypes(endpoint, projectId, apiKey);
+generateTypes(endpoint, projectId, apiKey, outputPath);

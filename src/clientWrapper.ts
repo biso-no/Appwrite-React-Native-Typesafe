@@ -1,10 +1,19 @@
 import { Client, Databases, Models } from 'node-appwrite';
-import { DatabaseMap } from './types'; 
 import { buildQueries, QueryOptions } from './lib/query-builder';
 import { buildPermissions, PermissionOptions } from './lib/permission-builder';
+import type { DatabaseMap as DatabaseMapTypes } from './types';
+import path from 'path';
 
-type DatabaseId = keyof DatabaseMap;
-type CollectionId<DB extends DatabaseId> = keyof DatabaseMap[DB];
+const TYPES_PATH = process.env.TYPES_PATH || path.join(__dirname, 'types');
+
+
+
+
+const DatabaseMap = require(path.resolve(TYPES_PATH, 'types')).DatabaseMap;
+
+
+type DatabaseId = keyof typeof DatabaseMap;
+type CollectionId<DB extends DatabaseId> = keyof typeof DatabaseMap[DB];
 
 class TypedAppwriteClient {
   private client: Client;
@@ -23,13 +32,13 @@ class TypedAppwriteClient {
       databaseId: DB,
       collectionId: COL,
       documentId?: string,
-      data: Omit<DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>,
+      data: Omit<typeof DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>,
       permissions?: PermissionOptions
     }
-  ): Promise<DatabaseMap[DB][COL] & Models.Document> {
+  ): Promise<typeof DatabaseMap[DB][COL] & Models.Document> {
     const { databaseId, collectionId, documentId = 'unique()', data, permissions } = options;
     const permissionList = permissions ? buildPermissions(permissions) : [];
-    return await this.databases.createDocument<DatabaseMap[DB][COL]>(
+    return await this.databases.createDocument<typeof DatabaseMap[DB][COL]>(
       databaseId as string,
       collectionId as string,
       documentId,
@@ -77,7 +86,7 @@ class TypedAppwriteClient {
       databaseId: DB,
       collectionId: COL,
       documentId: DocId,
-      data: Partial<Omit<DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>>,
+      data: Partial<Omit<typeof DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>>,
       permissions?: PermissionOptions
     }
   ) {
