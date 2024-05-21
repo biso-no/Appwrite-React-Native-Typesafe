@@ -3,29 +3,9 @@ import { DatabaseMap } from './types';
 import { buildQueries, QueryOptions } from './lib/query-builder';
 import { buildPermissions, PermissionOptions } from './lib/permission-builder';
 
-<<<<<<< HEAD
-const TYPES_PATH = process.env.TYPES_PATH || path.join(process.cwd(), 'types'); 
-
-// Use dynamic import to load the types
-async function loadDatabaseMap() {
-  const typesModule = await import(path.resolve(TYPES_PATH, 'types'));
-  return typesModule.DatabaseMap as DatabaseMapTypes;
-}
-
-let DatabaseMap: DatabaseMapTypes;
-
-loadDatabaseMap().then((map) => {
-  DatabaseMap = map;
-}).catch((error) => {
-  console.error('Error loading types:', error);
-});
-
-type DatabaseId = keyof typeof DatabaseMap;
-type CollectionId<DB extends DatabaseId> = keyof typeof DatabaseMap[DB];
-=======
 type DatabaseId = keyof DatabaseMap;
 type CollectionId<DB extends DatabaseId> = keyof DatabaseMap[DB];
->>>>>>> parent of 58c5f57 (Dynamic types path?)
+
 
 class TypedAppwriteClient {
   private client: Client;

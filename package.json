@@ -1,10 +1,6 @@
 {
   "name": "typesafe-node-appwrite",
-<<<<<<< HEAD
-  "version": "0.2.14-alpha",
-=======
-  "version": "0.2.12-alpha",
->>>>>>> parent of 58c5f57 (Dynamic types path?)
+  "version": "0.2.16-alpha",
   "description": "This package enables you to typesafe your Appwrite APIs by generating TypeScript types automatically.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

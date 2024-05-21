@@ -35,11 +35,8 @@ function sanitizeTypeName(name: string): string {
  * @param {string} projectId - The Appwrite project ID.
  * @param {string} apiKey - The Appwrite API key.
  */
-<<<<<<< HEAD
-async function generateTypes(endpoint: string, projectId: string, apiKey: string, outputPath: string = path.join(process.cwd(), 'types')) {
-=======
+
 async function generateTypes(endpoint: string, projectId: string, apiKey: string) {
->>>>>>> parent of 58c5f57 (Dynamic types path?)
   const client = new Client();
   const databases = new Databases(client);
 
@@ -142,9 +139,6 @@ export interface ${interfaceName} extends Models.Document {
     }
 
     collectionMap += '};\n';
-
-    // Ensure the directory exists before writing the file
-    fs.mkdirSync(outputPath, { recursive: true });
     
     fs.writeFileSync(
       path.join(__dirname, 'types.ts'),  // Correct path for output file
@@ -161,10 +155,6 @@ export interface ${interfaceName} extends Models.Document {
 const endpoint = process.env.APPWRITE_ENDPOINT || '';
 const projectId = process.env.APPWRITE_PROJECT_ID || '';
 const apiKey = process.env.APPWRITE_API_KEY || '';
-<<<<<<< HEAD
-const outputPath = process.argv[2] || path.join(process.cwd(), 'types'); // Default to project root
-=======
->>>>>>> parent of 58c5f57 (Dynamic types path?)
 
 if (!endpoint || !projectId || !apiKey) {
   console.error('Please provide APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID, and APPWRITE_API_KEY as environment variables.');
