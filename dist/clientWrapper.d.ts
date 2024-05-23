@@ -19,12 +19,12 @@ declare class TypedAppwriteClient {
         databaseId: DB;
         collectionId: COL;
         queries?: QueryOptions;
-    }): Promise<Models.DocumentList<Models.Document>>;
+    }): Promise<(DatabaseMap[DB][COL] & Models.Document)[]>;
     getDocument<DB extends DatabaseId, COL extends CollectionId<DB>, DocId extends string>(options: {
         databaseId: DB;
         collectionId: COL;
         documentId: DocId;
-    }): Promise<Models.Document>;
+    }): Promise<DatabaseMap[DB][COL] & Models.Document>;
     updateDocument<DB extends DatabaseId, COL extends CollectionId<DB>, DocId extends string>(options: {
         databaseId: DB;
         collectionId: COL;
@@ -44,6 +44,6 @@ declare class TypedAppwriteClient {
         relatedCollectionId: RelCol;
         relationType: 'oneToOne' | 'oneToMany' | 'manyToMany';
         queries?: QueryOptions;
-    }): Promise<Models.DocumentList<Models.Document>>;
+    }): Promise<(DatabaseMap[DB][RelCol] & Models.Document)[]>;
 }
 export default TypedAppwriteClient;

@@ -18,22 +18,9 @@ const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-/**
- * Sanitizes a type name by replacing non-alphanumeric characters with underscores.
- *
- * @param {string} name - The name to sanitize.
- * @returns {string} The sanitized name.
- */
 function sanitizeTypeName(name) {
     return name.replace(/[^a-zA-Z0-9]/g, '_');
 }
-/**
- * Generates TypeScript types based on the Appwrite database schema.
- *
- * @param {string} endpoint - The Appwrite endpoint.
- * @param {string} projectId - The Appwrite project ID.
- * @param {string} apiKey - The Appwrite API key.
- */
 function generateTypes(endpoint, projectId, apiKey) {
     return __awaiter(this, void 0, void 0, function* () {
         const client = new node_appwrite_1.Client();
@@ -47,7 +34,7 @@ function generateTypes(endpoint, projectId, apiKey) {
             const databasesList = yield databases.list();
             console.log('Databases:', databasesList);
             let typeDefinitions = `
-import { Models, Permission } from 'node-appwrite';
+import { Models } from 'node-appwrite';
 
 /**
  * Represents different role strings that can be used for permissions.
@@ -80,6 +67,7 @@ export type PermissionOptions = {
 };
 
 export interface Document extends Models.Document {}
+export interface DocumentList<T extends Models.Document> extends Models.DocumentList<T> {}
 `;
             let collectionMap = 'export type DatabaseMap = {\n';
             for (const database of databasesList.databases) {
@@ -116,7 +104,6 @@ export interface Document extends Models.Document {}
                     typeDefinitions += `
 export interface ${interfaceName} extends Models.Document {
   ${types.join('\n  ')}
-  permissions?: PermissionOptions;
 }\n`;
                     databaseCollectionMap += `    '${collection.$id}': ${interfaceName};\n`;
                 }

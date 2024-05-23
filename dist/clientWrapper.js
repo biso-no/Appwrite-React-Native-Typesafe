@@ -21,20 +21,23 @@ class TypedAppwriteClient {
         return __awaiter(this, void 0, void 0, function* () {
             const { databaseId, collectionId, documentId = 'unique()', data, permissions } = options;
             const permissionList = permissions ? (0, permission_builder_1.buildPermissions)(permissions) : [];
-            return yield this.databases.createDocument(databaseId, collectionId, documentId, data, permissionList);
+            const document = yield this.databases.createDocument(databaseId, collectionId, documentId, data, permissionList);
+            return document;
         });
     }
     listDocuments(options) {
         return __awaiter(this, void 0, void 0, function* () {
             const { databaseId, collectionId, queries } = options;
             const queryList = queries ? (0, query_builder_1.buildQueries)(queries) : [];
-            return yield this.databases.listDocuments(databaseId, collectionId, queryList);
+            const documents = yield this.databases.listDocuments(databaseId, collectionId, queryList);
+            return documents.documents;
         });
     }
     getDocument(options) {
         return __awaiter(this, void 0, void 0, function* () {
             const { databaseId, collectionId, documentId } = options;
-            return yield this.databases.getDocument(databaseId, collectionId, documentId);
+            const document = yield this.databases.getDocument(databaseId, collectionId, documentId);
+            return document;
         });
     }
     updateDocument(options) {

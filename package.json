@@ -1,6 +1,6 @@
 {
   "name": "react-native-typesafe-appwrite",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "This package enables you to typesafe your Appwrite APIs by generating TypeScript types automatically.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
