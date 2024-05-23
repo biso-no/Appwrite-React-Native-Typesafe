@@ -1,4 +1,4 @@
-import { Permission } from 'node-appwrite';
+import { Permission } from 'appwrite';
 
 /**
  * Represents different role strings that can be used for permissions.

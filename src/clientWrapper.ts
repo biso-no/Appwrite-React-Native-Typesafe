@@ -1,11 +1,10 @@
-import { Client, Databases, Models } from 'node-appwrite';
+import { Client, Databases, Models } from 'appwrite';
 import { DatabaseMap } from './types'; 
 import { buildQueries, QueryOptions } from './lib/query-builder';
 import { buildPermissions, PermissionOptions } from './lib/permission-builder';
 
 type DatabaseId = keyof DatabaseMap;
 type CollectionId<DB extends DatabaseId> = keyof DatabaseMap[DB];
-
 
 class TypedAppwriteClient {
   private client: Client;
@@ -24,7 +23,7 @@ class TypedAppwriteClient {
       databaseId: DB,
       collectionId: COL,
       documentId?: string,
-      data: Omit<DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>,
+      data: Omit<DatabaseMap[DB][COL], keyof Models.Document>,
       permissions?: PermissionOptions
     }
   ): Promise<DatabaseMap[DB][COL] & Models.Document> {
@@ -78,7 +77,7 @@ class TypedAppwriteClient {
       databaseId: DB,
       collectionId: COL,
       documentId: DocId,
-      data: Partial<Omit<DatabaseMap[DB][COL], '$id' | '$collectionId' | '$databaseId' | '$createdAt' | '$updatedAt' | '$permissions'>>,
+      data: Partial<Omit<DatabaseMap[DB][COL], keyof Models.Document>>,
       permissions?: PermissionOptions
     }
   ) {
@@ -109,127 +108,6 @@ class TypedAppwriteClient {
       databaseId as string,
       collectionId as string,
       documentId as string
-    );
-  }
-
-  async listCollections<DB extends DatabaseId>(
-    options: {
-      databaseId: DB,
-      queries?: QueryOptions,
-      search?: string
-    }
-  ) {
-    const { databaseId, queries, search } = options;
-    const queryList = queries ? buildQueries(queries) : [];
-    return await this.databases.listCollections(databaseId as string, queryList, search);
-  }
-
-  async getCollection<DB extends DatabaseId, COL extends CollectionId<DB>>(
-    options: {
-      databaseId: DB,
-      collectionId: COL
-    }
-  ) {
-    const { databaseId, collectionId } = options;
-    return await this.databases.getCollection(databaseId as string, collectionId as string);
-  }
-
-  async updateCollection<DB extends DatabaseId, COL extends CollectionId<DB>>(
-    options: {
-      databaseId: DB,
-      collectionId: COL,
-      name: string,
-      permissions?: PermissionOptions,
-      security?: boolean,
-      enabled?: boolean
-    }
-  ) {
-    const { databaseId, collectionId, name, permissions, security, enabled } = options;
-    const permissionList = permissions ? buildPermissions(permissions) : [];
-    return await this.databases.updateCollection(
-      databaseId as string,
-      collectionId as string,
-      name,
-      permissionList,
-      security,
-      enabled
-    );
-  }
-
-  async deleteCollection<DB extends DatabaseId, COL extends CollectionId<DB>>(
-    options: {
-      databaseId: DB,
-      collectionId: COL
-    }
-  ) {
-    const { databaseId, collectionId } = options;
-    return await this.databases.deleteCollection(
-      databaseId as string,
-      collectionId as string
-    );
-  }
-
-  async listDatabases(options?: { queries?: QueryOptions, search?: string }) {
-    const { queries, search } = options || {};
-    const queryList = queries ? buildQueries(queries) : [];
-    return await this.databases.list(queryList, search);
-  }
-
-  async getDatabase<DB extends DatabaseId>(options: { databaseId: DB }) {
-    const { databaseId } = options;
-    return await this.databases.get(databaseId as string);
-  }
-
-  async updateDatabase<DB extends DatabaseId>(
-    options: {
-      databaseId: DB,
-      name: string,
-      enabled: boolean
-    }
-  ) {
-    const { databaseId, name, enabled } = options;
-    return await this.databases.update(
-      databaseId as string,
-      name,
-      enabled
-    );
-  }
-
-  async deleteDatabase<DB extends DatabaseId>(options: { databaseId: DB }) {
-    const { databaseId } = options;
-    return await this.databases.delete(
-      databaseId as string
-    );
-  }
-
-  async createDatabase<DB extends DatabaseId>(
-    options: {
-      id: DB,
-      name: string,
-      enabled: boolean
-    }
-  ) {
-    const { id, name, enabled } = options;
-    return await this.databases.create(
-      id as string,
-      name,
-      enabled
-    );
-  }
-
-  async listAttributes<DB extends DatabaseId, COL extends CollectionId<DB>>(
-    options: {
-      databaseId: DB,
-      collectionId: COL,
-      queries: QueryOptions
-    }
-  ) {
-    const { databaseId, collectionId, queries } = options;
-    const queryList = buildQueries(queries);
-    return await this.databases.listAttributes(
-      databaseId as string,
-      collectionId as string,
-      queryList
     );
   }
 

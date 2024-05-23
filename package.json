@@ -1,6 +1,6 @@
 {
-  "name": "typesafe-node-appwrite",
-  "version": "0.2.16-alpha",
+  "name": "typesafe-appwrite-client",
+  "version": "0.1.0",
   "description": "This package enables you to typesafe your Appwrite APIs by generating TypeScript types automatically.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -26,11 +26,7 @@
   "author": "Markus Heien",
   "license": "MIT",
   "dependencies": {
-    "appwrite": "^14.0.1",
-    "dotenv": "^16.4.5",
-    "node-appwrite": "^12.0.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "appwrite": "^14.0.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
@@ -38,6 +34,10 @@
     "@typescript-eslint/eslint-plugin": "^7.9.0",
     "@typescript-eslint/parser": "^7.9.0",
     "eslint": "^8.57.0",
-    "jes": "^0.6.1"
+    "node-appwrite": "^12.0.1",
+    "jes": "^0.6.1",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   }
 }

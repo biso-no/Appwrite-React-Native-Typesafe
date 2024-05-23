@@ -1,4 +1,4 @@
-import { Query } from 'node-appwrite';
+import { Query } from 'appwrite';
 
 /**
  * Options for configuring queries.
