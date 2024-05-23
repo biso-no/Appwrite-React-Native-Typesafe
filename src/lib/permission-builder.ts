@@ -1,4 +1,4 @@
-import { Permission } from 'appwrite';
+import { Permission } from 'react-native-appwrite';
 
 /**
  * Represents different role strings that can be used for permissions.

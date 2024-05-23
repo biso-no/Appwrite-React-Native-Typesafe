@@ -1,4 +1,4 @@
-import { Query } from 'appwrite';
+import { Query } from 'react-native-appwrite';
 
 /**
  * Options for configuring queries.

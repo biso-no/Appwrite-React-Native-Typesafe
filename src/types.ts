@@ -1,4 +1,4 @@
-import { Models } from 'appwrite';
+import { Models } from 'react-native-appwrite';
 
 export interface Document extends Models.Document {}
 
