@@ -7,9 +7,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-/**
- * Represents an attribute in a collection.
- */
 interface Attribute {
   key: string;
   type: string;
@@ -18,23 +15,9 @@ interface Attribute {
   relatedCollectionId?: string;
 }
 
-/**
- * Sanitizes a type name by replacing non-alphanumeric characters with underscores.
- * 
- * @param {string} name - The name to sanitize.
- * @returns {string} The sanitized name.
- */
 function sanitizeTypeName(name: string): string {
   return name.replace(/[^a-zA-Z0-9]/g, '_');
 }
-
-/**
- * Generates TypeScript types based on the Appwrite database schema.
- * 
- * @param {string} endpoint - The Appwrite endpoint.
- * @param {string} projectId - The Appwrite project ID.
- * @param {string} apiKey - The Appwrite API key.
- */
 
 async function generateTypes(endpoint: string, projectId: string, apiKey: string) {
   const client = new Client();
@@ -51,7 +34,7 @@ async function generateTypes(endpoint: string, projectId: string, apiKey: string
     console.log('Databases:', databasesList);
 
     let typeDefinitions = `
-import { Models, Permission } from 'node-appwrite';
+import { Models } from 'node-appwrite';
 
 /**
  * Represents different role strings that can be used for permissions.
@@ -84,6 +67,7 @@ export type PermissionOptions = {
 };
 
 export interface Document extends Models.Document {}
+export interface DocumentList<T extends Models.Document> extends Models.DocumentList<T> {}
 `;
 
     let collectionMap = 'export type DatabaseMap = {\n';
@@ -128,7 +112,6 @@ export interface Document extends Models.Document {}
         typeDefinitions += `
 export interface ${interfaceName} extends Models.Document {
   ${types.join('\n  ')}
-  permissions?: PermissionOptions;
 }\n`;
 
         databaseCollectionMap += `    '${collection.$id}': ${interfaceName};\n`;
@@ -139,7 +122,7 @@ export interface ${interfaceName} extends Models.Document {
     }
 
     collectionMap += '};\n';
-    
+
     fs.writeFileSync(
       path.join(__dirname, 'types.ts'),  // Correct path for output file
       typeDefinitions + '\n' + collectionMap

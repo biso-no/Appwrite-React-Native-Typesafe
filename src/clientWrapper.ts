@@ -16,57 +16,63 @@ class TypedAppwriteClient {
   }
 
   async createDocument<
-    DB extends DatabaseId,
-    COL extends CollectionId<DB>
-  >(
-    options: {
-      databaseId: DB,
-      collectionId: COL,
-      documentId?: string,
-      data: Omit<DatabaseMap[DB][COL], keyof Models.Document>,
-      permissions?: PermissionOptions
-    }
-  ): Promise<DatabaseMap[DB][COL] & Models.Document> {
-    const { databaseId, collectionId, documentId = 'unique()', data, permissions } = options;
-    const permissionList = permissions ? buildPermissions(permissions) : [];
-    return await this.databases.createDocument<DatabaseMap[DB][COL]>(
-      databaseId as string,
-      collectionId as string,
-      documentId,
-      data,
-      permissionList
-    );
+  DB extends DatabaseId,
+  COL extends CollectionId<DB>
+>(
+  options: {
+    databaseId: DB,
+    collectionId: COL,
+    documentId?: string,
+    data: Omit<DatabaseMap[DB][COL], keyof Models.Document>,
+    permissions?: PermissionOptions
   }
+): Promise<DatabaseMap[DB][COL] & Models.Document> {
+  const { databaseId, collectionId, documentId = 'unique()', data, permissions } = options;
+  const permissionList = permissions ? buildPermissions(permissions) : [];
+  const document = await this.databases.createDocument<DatabaseMap[DB][COL]>(
+    databaseId as string,
+    collectionId as string,
+    documentId,
+    data,
+    permissionList
+  );
+  return document as DatabaseMap[DB][COL] & Models.Document;
+}
+
 
   async listDocuments<
-    DB extends DatabaseId,
-    COL extends CollectionId<DB>
-  >(
-    options: {
-      databaseId: DB,
-      collectionId: COL,
-      queries?: QueryOptions
-    }
-  ) {
-    const { databaseId, collectionId, queries } = options;
-    const queryList = queries ? buildQueries(queries) : [];
-    return await this.databases.listDocuments(databaseId as string, collectionId as string, queryList);
+  DB extends DatabaseId,
+  COL extends CollectionId<DB>
+>(
+  options: {
+    databaseId: DB,
+    collectionId: COL,
+    queries?: QueryOptions
   }
+): Promise<(DatabaseMap[DB][COL] & Models.Document)[]> {
+  const { databaseId, collectionId, queries } = options;
+  const queryList = queries ? buildQueries(queries) : [];
+  const documents = await this.databases.listDocuments(databaseId as string, collectionId as string, queryList);
+  return documents.documents as (DatabaseMap[DB][COL] & Models.Document)[];
+}
 
-  async getDocument<
-    DB extends DatabaseId,
-    COL extends CollectionId<DB>,
-    DocId extends string
-  >(
-    options: {
-      databaseId: DB,
-      collectionId: COL,
-      documentId: DocId
-    }
-  ) {
-    const { databaseId, collectionId, documentId } = options;
-    return await this.databases.getDocument(databaseId as string, collectionId as string, documentId);
+
+async getDocument<
+  DB extends DatabaseId,
+  COL extends CollectionId<DB>,
+  DocId extends string
+>(
+  options: {
+    databaseId: DB,
+    collectionId: COL,
+    documentId: DocId
   }
+): Promise<DatabaseMap[DB][COL] & Models.Document> {
+  const { databaseId, collectionId, documentId } = options;
+  const document = await this.databases.getDocument(databaseId as string, collectionId as string, documentId);
+  return document as DatabaseMap[DB][COL] & Models.Document;
+}
+
 
   async updateDocument<
     DB extends DatabaseId,
